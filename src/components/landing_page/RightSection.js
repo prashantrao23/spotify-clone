@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import image_1 from '../../assets/ab67706f000000024f9e6dd438531652db9fe2c4.jpeg';
 import image_2 from '../../assets/ab67706f00000002776d882a0eb24571af5dc394.jpeg';
 import image_3 from '../../assets/ab67706f000000027876fe166a29b8e6b8db14da.jpeg';
@@ -6,6 +6,7 @@ import image_4 from '../../assets/ab67706f0000000278b4745cb9ce8ffe32daaf7e.jpeg'
 import image_5 from '../../assets/ab67706f000000027bcd851d16216fae85f63a28.jpeg';
 import image_6 from '../../assets/ab67706f00000002b538e7d67a2c102d12c9dbda.jpeg';
 
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -15,6 +16,19 @@ import 'swiper/css/pagination';
 
 
 const RightSection = () => {
+
+    // const token = localStorage.getItem('token')
+    // if (token!=null){
+    //     Navigate('/maindashboard')
+    // }
+    let navigate = useNavigate();
+
+    useEffect(()=>{
+        if (localStorage.getItem("token")) {
+            navigate('/maindashboard');
+        }
+        // eslint-disable-next-line
+    },[])
 
     const breakpoints = {
         944: {
@@ -54,8 +68,8 @@ const RightSection = () => {
                         </ul>
                         <div className='border-solid border-[1px] border-white-500 m-3'></div>
                         <ul className='flex gap-2'>
-                            <li className='py-2 pr-8 pl-2 hover:scale-105 hover:text-white text-gray-400'><a href="/">Sign up</a></li>
-                            <li className='py-2 px-8 bg-white rounded-full text-black hover:scale-105'><a href="/">Log in</a></li>
+                            <li className='py-2 pr-8 pl-2 hover:scale-105 hover:text-white text-gray-400'><Link to="/signup">Sign up</Link></li>
+                            <li className='py-2 px-8 bg-white rounded-full text-black hover:scale-105'><Link to="/login">Log in</Link></li>
                         </ul>
                     </div>
                 </div>

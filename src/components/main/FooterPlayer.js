@@ -29,9 +29,9 @@ const FooterPlayer = () => {
         </div>
       </div>
       <div>
-        <div class="">
+        <div className="">
           <span><i className="fa-solid fa-volume-high" /></span>
-          <input type="range" className="bg-white" min="0" max="100" step="1" value="50" />
+          {/* <input type="range" className="bg-white" min="0" max="100" step="1" value="50" onChange={''} /> */}
         </div>
       </div>
     </footer>

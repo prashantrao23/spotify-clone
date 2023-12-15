@@ -1,16 +1,25 @@
-.swiper-slide .play-btn{
-    opacity: 0;
-    transition: bottom 0.5s ease-out;
-    bottom: 0;
+.swiper-slide .play-btn {
+  opacity: 0;
+  transition: bottom 0.5s ease-out;
+  bottom: 0;
 }
 
-.swiper-slide:hover .play-btn{
-    opacity: 1;
-    bottom: 8px;
+.swiper-slide:hover .play-btn {
+  opacity: 1;
+  bottom: 8px;
 }
 
-.swiper-slide .play-btn:hover{
-    transform: scale(1.05);
+.swiper-slide .play-btn:hover {
+  transform: scale(1.05);
 }
 
+.left-section .lists .scrollbar {
+  width: 10px;
+  background-color: #ccc;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: none; /* Hide scrollbar by default */
+}
 
