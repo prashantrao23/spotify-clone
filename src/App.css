@@ -23,3 +23,35 @@
   display: none; /* Hide scrollbar by default */
 }
 
+
+
+
+.swiper:hover .swiper-button-next{
+  display: block;
+}
+
+.swiper:hover .swiper-button-prev{
+  display: block;
+}
+
+.swiper-button-disabled{
+  display: none !important;
+}
+
+.swiper-button-next, .swiper-button-prev{
+  display: none;
+}
+
+.swiper-button-next:after{
+  content: 'next';
+  color: white;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.swiper-button-prev:after{
+  content: 'prev';
+  color: white;
+  font-weight: 600;
+  font-size: 30px;
+}

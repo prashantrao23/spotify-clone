@@ -23,18 +23,6 @@ function App() {
         <Route exact path='/login' element={<Login getTokenkey={getTokenkey} />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='*' element={<MainDashboard />} />
-        {/* <Route
-          exact
-          path='/'
-          element={
-            <MainDashboard>
-              <MainSection>
-                <Route exact path='carddata' element={<CardData />} />
-                <Route exact path='mainrightsection' element={<MainRightSection />} />
-              </MainSection>
-            </MainDashboard>
-          }
-        /> */}
       </Routes>
     </SpotifyApiState>
   );

@@ -8,9 +8,9 @@ const CardData = (props) => {
 
     const context = useContext(SpotifyApiContext);
     const { singleplaylistdata, getPlaylists } = context;
-    
+
     const { id } = useParams();
-    console.log('ID from url',id);
+    console.log('ID from url', id);
 
     if (!singleplaylistdata || !singleplaylistdata.name) {
         console.log("No card data")
@@ -18,7 +18,7 @@ const CardData = (props) => {
 
 
     useEffect(() => {
-        getPlaylists();
+        getPlaylists(id);
         // eslint-disable-next-line
     }, []);
 
@@ -88,7 +88,7 @@ const CardData = (props) => {
                             </div>
                             <div className='px-6 bg-[#131316] font-light'>
                                 <table className="table-auto w-full ">
-                                    <thead className={`text-left border-b-[1px] text-sm text-gray-400 top-[68px] sticky `}>
+                                    <thead className={`text-left border-b-[1px] text-sm text-gray-400 top-0 sticky bg-black `}>
                                         <tr>
                                             <th className='font-medium'>#</th>
                                             <th className='font-medium'>Title</th>

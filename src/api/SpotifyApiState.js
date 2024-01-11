@@ -7,6 +7,7 @@ const SpotifyApiState = (props) => {
   const [categorydata, setCategorydata] = useState([])
   const [allplaylistdata, setAllPlaylistdata] = useState([])
   const [singleplaylistdata, setSinglePlaylistdata] = useState([])
+  const [getAlbum, setGetAlbum] = useState([])
 
 
 
@@ -97,8 +98,36 @@ const SpotifyApiState = (props) => {
   };
 
 
+  const getNewAlbums = async () => {
+    if (!accessToken) {
+      console.error('Access token not available yet.');
+      return;
+    }
+
+    const options = {
+      method: 'GET',
+      url: `https://api.spotify.com/v1/browse/new-releases`,
+      // params: {
+      //   id: id,
+      //   // lang: 'en'
+      // },
+      headers: { 'Authorization': 'Bearer ' + accessToken }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log('Fetch album data', response.data);
+      setGetAlbum(response.data);
+
+    } catch (error) {
+      console.error('Error Fetching album data', error.response.data.error);
+    }
+
+  };
+
+
   return (
-    <SpotifyApiContext.Provider value={{ categorydata, getCategories, allplaylistdata, getAllPlaylists, singleplaylistdata, getPlaylists, accessToken }}>
+    <SpotifyApiContext.Provider value={{ categorydata, getCategories, allplaylistdata, getAllPlaylists, singleplaylistdata, getPlaylists, accessToken, getNewAlbums, getAlbum }}>
       {props.children}
     </SpotifyApiContext.Provider>
   )

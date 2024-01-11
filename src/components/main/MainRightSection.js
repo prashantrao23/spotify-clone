@@ -8,14 +8,18 @@ import image_6 from '../../assets/ab67706f00000002b538e7d67a2c102d12c9dbda.jpeg'
 import SpotifyApiContext from '../../api/SpotifyApiContext';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 import CategoryCard from './cards/CategoryCard';
 import PlaylistCard from './cards/PlaylistCard';
 
 import { useNavigate } from 'react-router-dom';
+import Album from './cards/Album';
 
 
 
@@ -25,7 +29,7 @@ const MainRightSection = (props) => {
 
     const { showcarddata } = props;
     const context = useContext(SpotifyApiContext);
-    const { categorydata, getCategories, allplaylistdata, getAllPlaylists, getPlaylists, accessToken } = context;
+    const { categorydata, getCategories, allplaylistdata, getAllPlaylists, getPlaylists, getNewAlbums, getAlbum, accessToken } = context;
 
     let navigate = useNavigate();
 
@@ -47,6 +51,7 @@ const MainRightSection = (props) => {
         const fetchData = async () => {
             await getCategories();
             await getAllPlaylists();
+            await getNewAlbums();
             setLoading(false);
         };
 
@@ -57,6 +62,7 @@ const MainRightSection = (props) => {
 
     console.log("categorydata from Main Rightsection", categorydata);
     console.log("playlistdata from Main Rightsection", allplaylistdata);
+    console.log("albumdata from Main Rightsection", getAlbum);
 
     const getplaylistID = (id) => {
         console.log(id);
@@ -163,7 +169,7 @@ const MainRightSection = (props) => {
                         <button className='text-sm'>Show all</button>
                     </div>
                     <div className='pt-6'>
-                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints}>
+                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints} navigation={true} modules={[Navigation]}>
                             {!categorydata || !categorydata.categories ? (
 
                                 <div className='text-center text-2xl'>
@@ -190,7 +196,7 @@ const MainRightSection = (props) => {
                         <button className='text-sm'>Show all</button>
                     </div>
                     <div className='pt-6'>
-                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints}>
+                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints} navigation={true} modules={[Navigation]}>
                             {!allplaylistdata || !allplaylistdata.playlists ? (
 
                                 <div className='text-center text-2xl'>
@@ -202,6 +208,33 @@ const MainRightSection = (props) => {
                                     allplaylistdata.playlists.items.map((items, index) => {
                                         return <SwiperSlide key={index}>
                                             <PlaylistCard image={items.images} item={items} getplaylistID={getplaylistID} showcarddata={showcarddata} />
+                                        </SwiperSlide>
+                                    })
+                                )
+                            }
+
+                        </Swiper>
+                    </div>
+                </section>
+
+                <section className='mb-4 w-full'>
+                    <div className='flex justify-between font-semibold'>
+                        <h2 className='text-xl font-bold '><a href='/'>Albums</a></h2>
+                        <button className='text-sm'>Show all</button>
+                    </div>
+                    <div className='pt-6'>
+                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints} navigation={true} modules={[Navigation]}>
+                            {!getAlbum || !getAlbum.albums ? (
+
+                                <div className='text-center text-2xl'>
+                                    No Data to display yet ...
+                                </div>
+                            ) :
+                                (
+
+                                    getAlbum.albums.items.map((items, index) => {
+                                        return <SwiperSlide key={index}>
+                                            <Album image={items.images} item={items} />
                                         </SwiperSlide>
                                     })
                                 )

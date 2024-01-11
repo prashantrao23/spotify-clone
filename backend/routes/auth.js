@@ -1,7 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/Users_m');
-// const Note = require('../models/Notes_m');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -12,9 +11,11 @@ const JWT_SECRET = 'JWTPriv@teKEY';
 
 //Route 1: create a user using: POST "/api/auth/". Dosent require authentication
 router.post('/createuser', [
-    body('name', 'Enter valid name and atleast 5 character').notEmpty().isLength({ min: 3 }).escape(),  //escape is a sanitizer, means no one can send data through url manually
+    body('firstname', 'Enter valid name and atleast 5 character').notEmpty().isLength({ min: 3 }).escape(),  //escape is a sanitizer, means no one can send data through url manually
+    body('lastname', 'Enter your last name').notEmpty(),
     body('email', 'Enter valid email').isEmail(), //these are vaidators
     body('password', 'Password must be atleast 5 character').isLength({ min: 5 }),
+
 
 ], async (req, res) => {
 
@@ -42,7 +43,8 @@ router.post('/createuser', [
         //we dont need .then if we are using await
         //create a user
         user = await User.create({
-            name: req.body.name,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
             password: securePass
         })

@@ -16,5 +16,5 @@ app.use('/api/auth', require('./routes/auth'))
 
 
 app.listen(port, () => {
-  console.log(`iNotebook backend listening on port http://127.0.0.1:${port}`)
+  console.log(`Spotify_clone backend listening on port http://127.0.0.1:${port}`)
 })

@@ -3,7 +3,11 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-    name: {
+    firstname: {
+        type: String,
+        requied: true
+    },
+    lastname: {
         type: String,
         requied: true
     },
