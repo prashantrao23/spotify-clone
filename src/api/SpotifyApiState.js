@@ -11,7 +11,7 @@ const SpotifyApiState = (props) => {
 
 
 
-  const accessToken = localStorage.getItem('token');
+  const accessToken = sessionStorage.getItem('token');
   // console.log('Token from apistate',accessToken)
 
 
