@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import MoonLoader from "react-spinners/ClipLoader";
+import logo from '../../assets/logo/Spotify_Logo_RGB_Green.png'
 
 const Login = (props) => {
 
+    const [loading, setLoading] = useState(false);
 
     const host = 'http://127.0.0.1:5000';
 
@@ -52,7 +55,8 @@ const Login = (props) => {
 
             const data = await response.json();
             getTokenkey(data.access_token)
-            localStorage.setItem('token', data.access_token);
+            // localStorage.setItem('token', data.access_token);
+            sessionStorage.setItem('token', data.access_token);
             navigate('/');
         } catch (error) {
             console.error('Error fetching Spotify API token:', error);
@@ -63,24 +67,38 @@ const Login = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        validateForm();
-
-        const response = await fetch(`${host}/api/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: credential.email, password: credential.password }),
-        });
-
-        const json = await response.json();
-        console.log(json);
-        if (json.success) {
-            await getToken(); // Make sure to wait for token retrieval before navigating.
-        } else {
-            alert("Invalid credentials")
-            console.log("Invalid credentials");
+        if (!validateForm()) {
+            return;
         }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(`${host}/api/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: credential.email, password: credential.password }),
+            });
+
+            const json = await response.json();
+            console.log(json);
+            if (json.success) {
+                await getToken(); // Make sure to wait for token retrieval before navigating.
+                const expirationTime = new Date().getTime() + 60 * 60 * 1000;
+                sessionStorage.setItem('expirationTime', expirationTime);
+            } else {
+                alert("Invalid credentials")
+                console.log("Invalid credentials");
+            }
+        } catch (error) {
+            console.error('Error during login:', error);
+        }
+        finally {
+            setLoading(false);
+        }
+
 
     }
 
@@ -96,7 +114,9 @@ const Login = (props) => {
     return (
         <div>
             <div className='py-8 pl-[51px]'>
-                <div className='text-white font-bold'>Spotify</div>
+                <div className=''>
+                    <img src={logo} alt="Spotify" width={100} />
+                </div>
             </div>
             <div className='py-8 sm:px-8 flex justify-center bg-gradient-to-b from-[#242424]'>
                 <div className='bg-black px-2 sm:px-0 sm:max-w-[734px] w-full'>
@@ -110,7 +130,7 @@ const Login = (props) => {
                             <label htmlFor="password" className='text-white font-semibold mt-2 pb-1'>Password</label>
                             <input onChange={onChange} value={credential.password} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="password" name="password" id="password" placeholder='Password' />
                             <span className="error  text-red-400">{errors.password}</span>
-                            <button type="submit" className='rounded-full bg-green-500 font-semibold w-full p-[14px] my-8'>Log In</button>
+                            <button type="submit" className='rounded-full bg-[#1DB954] font-semibold w-full p-[14px] my-8'>{loading ? <MoonLoader color="#000000" /> : 'Log In'}</button>
                         </form>
                         <span className='text-white text-center underline'><a href="/">Forgot your Password?</a></span>
                     </div>

@@ -21,6 +21,8 @@ import PlaylistCard from './cards/PlaylistCard';
 import { useNavigate } from 'react-router-dom';
 import Album from './cards/Album';
 
+import MoonLoader from "react-spinners/ClipLoader";
+
 
 
 
@@ -60,9 +62,9 @@ const MainRightSection = (props) => {
     }, [accessToken]);
 
 
-    console.log("categorydata from Main Rightsection", categorydata);
-    console.log("playlistdata from Main Rightsection", allplaylistdata);
-    console.log("albumdata from Main Rightsection", getAlbum);
+    // console.log("categorydata from Main Rightsection", categorydata);
+    // console.log("playlistdata from Main Rightsection", allplaylistdata);
+    // console.log("albumdata from Main Rightsection", getAlbum);
 
     const getplaylistID = (id) => {
         console.log(id);
@@ -71,7 +73,9 @@ const MainRightSection = (props) => {
     }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div className='flex justify-center items-center h-full w-full'>
+            <MoonLoader color="#36d7b7" />
+        </div>;
         // console.log("Loading...")
     }
 

@@ -77,7 +77,7 @@ const MainSection = (props) => {
                         <ul className={` ${profiledropdown ? 'block' : 'hidden'} absolute grid grid-cols-1 divide-y bg-[#282828] text-sm w-[196px] h-[120px] right-2 top-[70px] p-1`}>
                             {/* <li className='text-[#d2d2d2] py-3 pr-2 pl-3'>Account</li> */}
                             <li className='text-[#d2d2d2] py-3 pr-2 pl-3'>Profile</li>
-                            <li className='border-solid text-[#d2d2d2] py-3 pr-2 pl-3'><button onClick={logout}>Log out</button></li>
+                            <li className='border-solid text-[#d2d2d2] py-3 pr-2 pl-3 hover:bg-[#3f3f3f] '><button onClick={logout}>Log out</button></li>
                         </ul>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ const SpotifyApiState = (props) => {
 
 
   const accessToken = localStorage.getItem('token');
-  console.log('Token from apistate',accessToken)
+  // console.log('Token from apistate',accessToken)
 
 
 
@@ -34,7 +34,7 @@ const SpotifyApiState = (props) => {
 
     try {
       const response = await axios.request(options);
-      console.log('categories data from api state', response.data);
+      // console.log('categories data from api state', response.data);
       setCategorydata(response.data);
 
     } catch (error) {
@@ -61,7 +61,7 @@ const SpotifyApiState = (props) => {
 
     try {
       const response = await axios.request(options);
-      console.log('Fetch All playlist data', response.data);
+      // console.log('Fetch All playlist data', response.data);
       setAllPlaylistdata(response.data);
 
     } catch (error) {
@@ -88,7 +88,7 @@ const SpotifyApiState = (props) => {
 
     try {
       const response = await axios.request(options);
-      console.log('Fetch playlist data', response.data);
+      // console.log('Fetch playlist data', response.data);
       setSinglePlaylistdata(response.data);
 
     } catch (error) {
@@ -116,7 +116,7 @@ const SpotifyApiState = (props) => {
 
     try {
       const response = await axios.request(options);
-      console.log('Fetch album data', response.data);
+      // console.log('Fetch album data', response.data);
       setGetAlbum(response.data);
 
     } catch (error) {

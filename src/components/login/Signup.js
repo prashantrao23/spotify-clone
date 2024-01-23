@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom';
+import logo from '../../assets/logo/Spotify_Logo_RGB_Green.png'
+
 
 
 const Signup = (props) => {
@@ -124,7 +126,9 @@ const Signup = (props) => {
     return (
         <div className='bg-[#121212] h-screen'>
             <header className='p-8'>
-                <span className='text-white'>Spotify</span>
+            <div className=''>
+                    <img src={logo} alt="Spotify" width={100} />
+                </div>
             </header>
             <section className='flex flex-grow justify-center px-8'>
                 <div className='sm:w-[324px] w-full h-auto'>
