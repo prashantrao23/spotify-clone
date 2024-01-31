@@ -8,10 +8,13 @@ const SpotifyApiState = (props) => {
   const [allplaylistdata, setAllPlaylistdata] = useState([])
   const [singleplaylistdata, setSinglePlaylistdata] = useState([])
   const [getAlbum, setGetAlbum] = useState([])
+  const [searchKey, setSearchkey] = useState("")
 
+  const host = 'http://127.0.0.1:5000'
 
 
   const accessToken = sessionStorage.getItem('token');
+  const authToken = sessionStorage.getItem('token');
   // console.log('Token from apistate',accessToken)
 
 
@@ -125,9 +128,58 @@ const SpotifyApiState = (props) => {
 
   };
 
+  const getUserPlaylist = async () => {
+    if (!accessToken) {
+      console.error('Access token not available yet.');
+      return;
+    }
+
+    const options = {
+      method: 'GET',
+      url: `${host}/api/playlist/fetchallplaylist`,
+      headers: { "Content-Type": "application/json",
+      "auth-token": authToken }
+    };
+
+    try {
+      const response = await axios.request(options);
+      // console.log('Fetch album data', response.data);
+      setGetAlbum(response.data);
+
+    } catch (error) {
+      console.error('Error Fetching album data', error.response.data.error);
+    }
+
+  };
+
+
+  const getSearchItem = async (query) => {
+    // e.preventDefault()
+
+    const options = {
+      method: 'GET',
+      url: `https://api.spotify.com/v1/search?`,
+      params: {
+        q: query,
+        type: `artist,track`,
+        limit:5
+      },
+      headers: { 'Authorization': 'Bearer ' + accessToken }
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log('Search data', response.data);
+      setSearchkey(response.data);
+
+    } catch (error) {
+      console.error('Error Searching ', error.response.data.error);
+    }
+
+}
 
   return (
-    <SpotifyApiContext.Provider value={{ categorydata, getCategories, allplaylistdata, getAllPlaylists, singleplaylistdata, getPlaylists, accessToken, getNewAlbums, getAlbum }}>
+    <SpotifyApiContext.Provider value={{ categorydata, getCategories, allplaylistdata, getAllPlaylists, singleplaylistdata, getPlaylists, accessToken, getNewAlbums, getAlbum, getSearchItem, searchKey }}>
       {props.children}
     </SpotifyApiContext.Provider>
   )

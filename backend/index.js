@@ -13,6 +13,8 @@ app.use(express.json())  //middleware to get data
 
 //Available routes
 app.use('/api/auth', require('./routes/auth'))
+app.use('/api/playlist', require('./routes/playlists'))
+app.use('/api/tracks', require('./routes/tracks'))
 
 
 app.listen(port, () => {

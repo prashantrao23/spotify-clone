@@ -3,12 +3,9 @@ import MainSidenav from './MainSidenav'
 import FooterPlayer from './FooterPlayer'
 import MainSection from './MainSection'
 import { useNavigate } from 'react-router-dom'
+import Sidenav from './Sidenav'
 
-
-const MainDashboard = () => {
-
-
-
+const Dashboard = () => {
     const [sessionWarning, setSessionWarning] = useState(false); // Display warning state
     const [sessionEnd, setSessionEnd] = useState(false);
 
@@ -72,7 +69,7 @@ const MainDashboard = () => {
             )}
             <div className="App  text-white p-2 flex flex-col items-stretch  max-h-screen">
                 <div className='flex gap-2 mb-2 flex-grow dashboard overflow-y-hidden'>
-                    <MainSidenav />
+                    <Sidenav />
                     <MainSection />
                 </div>
                 <FooterPlayer />
@@ -81,4 +78,4 @@ const MainDashboard = () => {
     )
 }
 
-export default MainDashboard
+export default Dashboard

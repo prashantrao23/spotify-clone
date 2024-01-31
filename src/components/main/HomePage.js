@@ -24,11 +24,7 @@ import Album from './cards/Album';
 import MoonLoader from "react-spinners/ClipLoader";
 
 
-
-
-
-const MainRightSection = (props) => {
-
+const HomePage = (props) => {
     const { showcarddata } = props;
     const context = useContext(SpotifyApiContext);
     const { categorydata, getCategories, allplaylistdata, getAllPlaylists, getPlaylists, getNewAlbums, getAlbum, accessToken } = context;
@@ -227,7 +223,7 @@ const MainRightSection = (props) => {
                         <button className='text-sm'>Show all</button>
                     </div>
                     <div className='pt-6'>
-                        <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints} navigation={true} modules={[Navigation]}>
+                        {/* <Swiper slidesPerView={2} spaceBetween={10} breakpoints={breakpoints} navigation={true} modules={[Navigation]}>
                             {!getAlbum || !getAlbum.albums ? (
 
                                 <div className='text-center text-2xl'>
@@ -244,7 +240,7 @@ const MainRightSection = (props) => {
                                 )
                             }
 
-                        </Swiper>
+                        </Swiper> */}
                     </div>
                 </section>
 
@@ -253,4 +249,4 @@ const MainRightSection = (props) => {
     )
 }
 
-export default MainRightSection
+export default HomePage
