@@ -7,7 +7,7 @@ import logo from '../../assets/logo/Spotify_Logo_RGB_Green.png'
 const Signup = (props) => {
 
     const host = 'http://127.0.0.1:5000'
-    const [credential, setCredential] = useState({ firstname: "", lastname: "", email: "", password: "", confirm_password:"" })
+    const [credential, setCredential] = useState({ firstname: "", lastname: "", email: "", password: "", confirm_password: "" })
     const [errors, setErrors] = useState({});
     const client_id = 'e16d2adc1b4d4d1ea12fed9db89c4179';
     const client_secret = '1cb042fa23cc4014b3b9ffa279e478f0';
@@ -16,31 +16,31 @@ const Signup = (props) => {
 
     const validateForm = () => {
         let newErrors = {};
-    
+
         // Username validation
         if (!credential.firstname.trim()) {
-          newErrors.firstname = 'Firstname is required';
+            newErrors.firstname = 'Firstname is required';
         }
-    
+
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!credential.email.trim() || !emailRegex.test(credential.email)) {
-          newErrors.email = 'Invalid email address';
+            newErrors.email = 'Invalid email address';
         }
-    
+
         // Password validation
         if (credential.password.length < 6) {
-          newErrors.password = 'Password must be at least 6 characters';
+            newErrors.password = 'Password must be at least 6 characters';
         }
-    
+
         // Confirm Password validation
         if (credential.password !== credential.confirm_password) {
-          newErrors.confirm_password = 'Passwords do not match';
+            newErrors.confirm_password = 'Passwords do not match';
         }
-    
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0; // Return true if there are no errors
-      };
+    };
 
 
     const getToken = async () => {
@@ -70,17 +70,7 @@ const Signup = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const firstPassword = e.target.password.value;
-        const confirmPassword = e.target.confirm_password.value;
-
         validateForm();
-
-        // if (confirmPassword !== firstPassword) {
-        //     console.log("password and confirm password dosn't match")
-        //     alert(`password and confirm password dosn't match`);
-        //     return;
-
-        // }
 
         const response = await fetch(`${host}/api/auth/createuser`, {
             method: "POST",
@@ -95,8 +85,6 @@ const Signup = (props) => {
         console.log(json);
         if (json.success) {
             //redirect  and save authtoken
-            // getToken();
-            // localStorage.setItem('token', json.authToken);
             navigate('/maindashboard');
             // props.showalert(`${json.message}`, "success");
             console.log(json.message, "success")
@@ -120,13 +108,13 @@ const Signup = (props) => {
         //Whatever is changing, its value become its name
         setCredential({ ...credential, [e.target.name]: e.target.value })
 
-        setErrors((preError)=>({ ...preError, [e.target.name]: "" }));
+        setErrors((preError) => ({ ...preError, [e.target.name]: "" }));
     }
 
     return (
         <div className='bg-[#121212] h-screen'>
             <header className='p-8'>
-            <div className=''>
+                <div className=''>
                     <img src={logo} alt="Spotify" width={100} />
                 </div>
             </header>
@@ -137,11 +125,11 @@ const Signup = (props) => {
                     </div>
                     <form onSubmit={handleSubmit} className='flex flex-col'>
                         <label htmlFor="firstname" className='text-white font-semibold pb-1'>First Name</label>
-                        <input onChange={onChange} value={credential.firstname} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="text" name="firstname" id="firstname" placeholder='first name'  />
+                        <input onChange={onChange} value={credential.firstname} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="text" name="firstname" id="firstname" placeholder='first name' />
                         <span className="error text-red-400">{errors.firstname}</span>
 
                         <label htmlFor="lastname" className='text-white font-semibold pb-1'>Last Name</label>
-                        <input onChange={onChange} value={credential.lastname} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="text" name="lastname" id="lastname" placeholder='last name'  />
+                        <input onChange={onChange} value={credential.lastname} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="text" name="lastname" id="lastname" placeholder='last name' />
 
                         <label htmlFor="email" className='text-white font-semibold pb-1'>Email address</label>
                         <input onChange={onChange} value={credential.email} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="email" name="email" id="email" placeholder='name@domain.com' />
@@ -149,11 +137,11 @@ const Signup = (props) => {
 
 
                         <label htmlFor="password" className='text-white font-semibold pb-1'>Password</label>
-                        <input onChange={onChange} value={credential.password} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="password" name="password" id="password" placeholder='password'  />
+                        <input onChange={onChange} value={credential.password} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="password" name="password" id="password" placeholder='password' />
                         <span className="error  text-red-400">{errors.password}</span>
 
                         <label htmlFor="confirm_password" className='text-white font-semibold pb-1'>Confirm Password</label>
-                        <input onChange={onChange} value={credential.confirm_password} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="password" name="confirm_password" id="confirm_password" placeholder='confirm password'  />
+                        <input onChange={onChange} value={credential.confirm_password} className="rounded-sm bg-[#121212] border-[1px] border-solid p-[14px] text-white" type="password" name="confirm_password" id="confirm_password" placeholder='confirm password' />
                         <span className="error  text-red-400">{errors.confirm_password}</span>
 
                         <button type='submit' className='rounded-full bg-green-500 font-semibold w-full p-[14px] my-8'>Create account</button>

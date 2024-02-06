@@ -5,11 +5,16 @@ const { Schema } = mongoose;
 const playlisttrackSchema = new Schema({
     track_id: {
         type: String,
-        requied: true
+        required: true
     },
     playlist_id: {
         type: String,
         required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        requied: true
     },
     date: {
         type: Date,
@@ -17,4 +22,4 @@ const playlisttrackSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('PlaylistTacks', playlisttrackSchema)
+module.exports = mongoose.model('PlaylistTracks', playlisttrackSchema)

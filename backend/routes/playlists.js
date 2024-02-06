@@ -15,27 +15,42 @@ router.get('/fetchallplaylist', fetchuser, async (req, res) => {
 
 })
 
+router.get('/fetchlikedplaylist', fetchuser, async (req, res) => {
+
+    //fetching playlist by user id. We are getting user id through fetchuser
+    const playlist = await Playlist.findOne({ name: "Liked", user: req.user.id });
+    res.json(playlist);
+
+})
+
 //Route2: Add new notes using: POST "/api/note/createnote".Login required
 router.post('/createplaylist', fetchuser, [
-    body('title', 'Title cannot be empty').notEmpty().isLength({ min: 3 }).escape(),
+    body('name', 'Title cannot be empty').notEmpty().isLength({ min: 3 }).escape().trim(),
 ], async (req, res) => {
 
     //destructuring: fetching these details from req.body
-    const { title } = req.body;
+    const { name } = req.body;
     let success = false;
+    // console.log(req.body)
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
+
+
     try {
+        const existingPlaylist = await Playlist.findOne({ name: name });
+        if (existingPlaylist) {
+            return res.json({ success: success, message: 'Sorry, a playlist with same name already exists' });
+        }
         const playlist = new Playlist({
-            title, user: req.user.id
+            name, user: req.user.id
         })
         const savedplaylist = await playlist.save();
         success = true
-        res.json({ success : success, message:'Playlist created successfully', savedplaylist: savedplaylist });
+        res.json({ success: success, message: 'Playlist created successfully', savedplaylist: savedplaylist });
 
     }
     catch (error) {
@@ -49,7 +64,7 @@ router.post('/createplaylist', fetchuser, [
 //In API header we are sending JWT auth token 
 router.put('/updateplaylist/:id', fetchuser, async (req, res) => {
 
-    const { title} = req.body;
+    const { title } = req.body;
     let success = false;
 
 
@@ -71,7 +86,7 @@ router.put('/updateplaylist/:id', fetchuser, async (req, res) => {
         //new:true -> if some new content comes then create it
         playlist = await Playlist.findByIdAndUpdate(req.params.id, { $set: newPlaylist }, { new: true })
         success = true;
-        res.json({ success : success, message:'Playlist updated!!!', playlist: playlist });
+        res.json({ success: success, message: 'Playlist updated!!!', playlist: playlist });
         // res.json({ note });
     }
     catch (error) {
@@ -102,7 +117,7 @@ router.delete('/deleteplaylist/:id', fetchuser, async (req, res) => {
 
         playlist = await Playlist.findByIdAndDelete(req.params.id)
         success = true;
-        res.json({ success : success, message:'Your Playlist has been deleted', playlist: playlist });
+        res.json({ success: success, message: 'Your Playlist has been deleted', playlist: playlist });
     }
     catch (error) {
         console.error(error.message);

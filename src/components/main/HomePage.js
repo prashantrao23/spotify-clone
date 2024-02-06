@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import image_1 from '../../assets/ab67706f000000024f9e6dd438531652db9fe2c4.jpeg';
 import image_2 from '../../assets/ab67706f00000002776d882a0eb24571af5dc394.jpeg';
 import image_3 from '../../assets/ab67706f000000027876fe166a29b8e6b8db14da.jpeg';
@@ -36,6 +36,31 @@ const HomePage = (props) => {
 
     const [loading, setLoading] = useState(true);
 
+    const [greeting, setGreeting] = useState('');
+
+    useEffect(() => {
+        const getCurrentTime = () => {
+            const currentHour = new Date().getHours();
+
+            if (currentHour >= 5 && currentHour < 12) {
+                setGreeting('Good morning');
+            } else if (currentHour >= 12 && currentHour < 18) {
+                setGreeting('Good afternoon');
+            } else {
+                setGreeting('Good evening');
+            }
+        };
+
+        getCurrentTime(); // Set initial greeting
+
+        // Update greeting every minute
+        const intervalId = setInterval(getCurrentTime, 60000);
+
+        // Clean up interval on component unmount
+        return () => clearInterval(intervalId);
+    }, []); // Empty dependency array to run effect only once
+
+
     // useEffect(() => {
     //     const accessToken = localStorage.getItem('token');
     //     if (accessToken) {
@@ -62,11 +87,17 @@ const HomePage = (props) => {
     // console.log("playlistdata from Main Rightsection", allplaylistdata);
     // console.log("albumdata from Main Rightsection", getAlbum);
 
-    const getplaylistID = (id) => {
+    // const getplaylistID = (id) => {
+    //     console.log(id);
+    //     getPlaylists(id);
+    //     navigate(`/carddata/${id}`);
+    // }
+
+    const getplaylistID = useCallback((id) => {
         console.log(id);
         getPlaylists(id);
         navigate(`/carddata/${id}`);
-    }
+    }, [getPlaylists, navigate]);
 
     if (loading) {
         return <div className='flex justify-center items-center h-full w-full'>
@@ -103,7 +134,7 @@ const HomePage = (props) => {
 
             <div className='px-4 flex flex-row flex-wrap gap-6'>
                 <section className="mb-4 w-full">
-                    <div><p className=' text-white text-3xl mb-4 font-bold'>Good Evening</p></div>
+                    <div><p className=' text-white text-3xl mb-4 font-bold'>{greeting}</p></div>
                     <ul className='grid grid-cols-2 md:grid-cols-3 gap-4'>
                         <li className='flex gap-2 p-1 bg-[#4b4646] rounded-md'>
                             <div>

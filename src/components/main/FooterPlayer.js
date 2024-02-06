@@ -22,7 +22,9 @@ const FooterPlayer = () => {
           <button><i className="fa-solid fa-shuffle" /></button>
           <button><i className="fa-solid fa-backward-step" /></button>
         </div>
-        <button className='text-3xl'><i className="fa-solid fa-circle-play" /></button>
+        <audio controls="controls">
+    <source src="https://p.scdn.co/mp3-preview/1456b2c25081430313dd1c81c505f98d27585075?cid=e16d2adc1b4d4d1ea12fed9db89c4179" type="audio/mpeg"/>
+  </audio>
         <div className='flex flex-1 gap-4 text-lg'>
           <button><i className="fa-solid fa-forward-step" /></button>
           <button><i className="fa-solid fa-repeat" /></button>

@@ -1,6 +1,7 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/Users_m');
+const Playlist = require('../models/Playlist_model');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -48,6 +49,16 @@ router.post('/createuser', [
             email: req.body.email,
             password: securePass
         })
+
+        //check if the playlist and with same userid already exist
+        const existingPlaylist = await Playlist.findOne({ name: "Liked", user: user.id });
+        if (!existingPlaylist) {
+            await Playlist.create({
+                name: "Liked",
+                user: user.id
+            });
+        }
+
 
         //we will use user id as a unique value so that we can verify JWT
         const data = {

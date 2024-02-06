@@ -88,6 +88,8 @@ const Login = (props) => {
                 await getToken(); // Make sure to wait for token retrieval before navigating.
                 const expirationTime = new Date().getTime() + 60 * 60 * 1000;
                 sessionStorage.setItem('expirationTime', expirationTime);
+                localStorage.setItem('token', json.authToken);
+
             } else {
                 alert("Invalid credentials")
                 console.log("Invalid credentials");

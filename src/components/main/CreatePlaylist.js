@@ -1,36 +1,32 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+
 
 const CreatePlaylist = () => {
 
     const host = 'http://127.0.0.1:5000'
     const [playlist, setPlaylist] = useState({ name: "" })
+    const authToken = localStorage.getItem('token')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`${host}/api/playlist/creatplaylsit`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ name: playlist.name }),
-        });
+        const options = {
+            method: 'POST',
+            url: `${host}/api/playlist/createplaylist`,
+            headers: { "Content-Type": "application/json", "auth-token": authToken },
+            data: { name: playlist.name },
+        };
 
-        // return response.json(); // parses JSON response into native JavaScript objects
-        const json = await response.json();
-        console.log(json);
-        if (json.success) {
-            // navigate('/maindashboard');
-            // props.showalert(`${json.message}`, "success");
-            console.log(json.message, "Playlist created")
-        } else {
-            if (json.message === undefined) {
-                // props.showalert(`Some error occured, Unable to sign up `, 'danger');
-                console.log("Some error occured, Unable to create playlist")
-            } else {
-                alert(`${json.message}`);
-                console.log(json.message, "danger")
-            }
+        console.log(options);
+        try {
+            const response = await axios.request(options);
+            console.log('Playlist created', response.data);
+            // if (response.data.success) {
+            //     setSongLiked(true)
+            // }
+        } catch (error) {
+            console.error('Error creating playlist ', error.response.data.error);
         }
 
     }

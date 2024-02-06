@@ -15,35 +15,46 @@ router.get('/fetchalltracks', fetchuser, async (req, res) => {
 
 })
 
+router.get('/fetchlikedtracks/:id', fetchuser, async (req, res) => {
+
+    //fetching liked tracks by user id and playlist id. We are getting user id through fetchuser
+    const track = await Tracks.find({ playlist_id: req.params.id, user: req.user.id });
+    res.json(track);
+
+
+})
+
 //Route2: Add new notes using: POST "/api/note/createnote".Login required
 router.post('/addtrack', fetchuser, [
-    body('trackID', 'Track ID cannot be empty').notEmpty().escape(),
-    body('playlistID', 'Playlist ID cannot be empty').notEmpty().escape(),
+    body('track_id', 'Track ID cannot be empty').notEmpty().escape(),
+    body('playlist_id', 'Playlist ID cannot be empty').notEmpty().escape(),
 ], async (req, res) => {
 
     //destructuring: fetching these details from req.body
-    const { trackID, playlistID } = req.body;
+    const { track_id, playlist_id } = req.body;
     let success = false;
-
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-
+    const existingTrack = await Tracks.findOne({ track_id: track_id });
+    if (existingTrack) {
+        console.log("Sorry, a track with same id already exists")
+        return res.json({ success: success, message: 'Sorry, a track with same id already exists' });
+    }
     try {
         const track = new Tracks({
-            trackID, playlistID, user: req.user.id
+            track_id, playlist_id, user: req.user.id
         })
-        const savedtrack = await track.save();
+        const songadded = await track.save();
         success = true
-        res.json({ success : success, message:'Playlist created successfully', savedtrack: savedtrack });
-
+        res.json({ success: success, message: 'Song added successfully', songadded: songadded });
     }
     catch (error) {
         console.error(error.message);
         res.status(500).send("Internal server error occured");
     }
-
 })
 
 
@@ -66,7 +77,7 @@ router.delete('/deletetrack/:id', fetchuser, async (req, res) => {
 
         track = await Playlist.findByIdAndDelete(req.params.id)
         success = true;
-        res.json({ success : success, message:'Your Track has been deleted', track: track });
+        res.json({ success: success, message: 'Your Track has been deleted', track: track });
     }
     catch (error) {
         console.error(error.message);

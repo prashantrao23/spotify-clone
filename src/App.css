@@ -55,3 +55,19 @@
   font-weight: 600;
   font-size: 30px;
 }
+
+
+.swipercard .play-btn {
+  opacity: 0;
+  transition: bottom 0.5s ease-out;
+  bottom: 0;
+}
+
+.swipercard:hover .play-btn {
+  opacity: 1;
+  bottom: 8px;
+}
+
+.swipercard .play-btn:hover {
+  transform: scale(1.05);
+}

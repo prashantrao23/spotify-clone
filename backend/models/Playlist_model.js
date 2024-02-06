@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const playlistSchema = new Schema({
@@ -9,12 +8,14 @@ const playlistSchema = new Schema({
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'user',
+        requied: true
     },
     date: {
         type: Date,
         default: Date.now
     }
 })
+
 
 module.exports = mongoose.model('Playlist', playlistSchema)
