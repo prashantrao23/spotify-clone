@@ -23,6 +23,15 @@ router.get('/fetchlikedplaylist', fetchuser, async (req, res) => {
 
 })
 
+router.get('/fetchplaylistbyid/:id', fetchuser, async (req, res) => {
+
+    //fetching playlist by user id. We are getting user id through fetchuser
+    // console.log("id:",req.params.id, "user:",req.user.id)
+    const playlist = await Playlist.findOne({ _id: req.params.id, user: req.user.id });
+    res.json(playlist);
+
+})
+
 //Route2: Add new notes using: POST "/api/note/createnote".Login required
 router.post('/createplaylist', fetchuser, [
     body('name', 'Title cannot be empty').notEmpty().isLength({ min: 3 }).escape().trim(),

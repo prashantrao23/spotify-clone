@@ -27,11 +27,12 @@
 
 
 .swiper:hover .swiper-button-next{
-  display: block;
+  display: block !important;
 }
 
 .swiper:hover .swiper-button-prev{
-  display: block;
+  display: block !important;
+
 }
 
 .swiper-button-disabled{
@@ -39,21 +40,22 @@
 }
 
 .swiper-button-next, .swiper-button-prev{
-  display: none;
+  display: none !important;
 }
+
 
 .swiper-button-next:after{
   content: 'next';
   color: white;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 25px !important;
 }
 
 .swiper-button-prev:after{
   content: 'prev';
   color: white;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 25px !important;
 }
 
 

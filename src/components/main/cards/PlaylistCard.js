@@ -15,8 +15,8 @@ const PlaylistCard = (props) => {
                     <button className='play-btn rounded-full bg-green-500 w-[50px] h-[50px] absolute  right-2' onClick={() => { getplaylistID(item.id) }}><i className="fa-solid fa-play text-black" /></button>
                 </div>
                 <div>
-                    <p className='font-bold'>{item.name}</p>
-                    {/* <p className='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{item.description}</p> */}
+                    <p className='font-bold truncate'>{item.name}</p>
+                    <p className='text-sm truncate'>{item.description}</p>
                 </div>
             </div>
         </div>

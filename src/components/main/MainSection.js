@@ -1,10 +1,10 @@
 import React, { useState, useContext,useEffect, useCallback } from 'react'
-// import MainRightSection from './MainRightSection'
 import CardData from './cards/CardData'
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import Search from './Search';
 import HomePage from './HomePage';
 import SpotifyApiContext from '../../api/SpotifyApiContext';
+import PlaylistDetails from './PlaylistDetails';
 
 
 
@@ -131,6 +131,7 @@ const MainSection = (props) => {
                         <Route path="/carddata/:id" element={<CardData />} />
                         <Route path="/search" element={<Search />} />
                         <Route path="/" element={<HomePage />} />
+                        <Route path="/playlistdetails/:id" element={<PlaylistDetails />} />
                     </Routes>
                 </div>
             </div>

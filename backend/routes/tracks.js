@@ -20,9 +20,18 @@ router.get('/fetchlikedtracks/:id', fetchuser, async (req, res) => {
     //fetching liked tracks by user id and playlist id. We are getting user id through fetchuser
     const track = await Tracks.find({ playlist_id: req.params.id, user: req.user.id });
     res.json(track);
-
-
+    // console.log(track)
 })
+
+// router.get('/fetchtracksbyid/:id', fetchuser, async (req, res) => {
+
+//     //fetching liked tracks by user id and playlist id. We are getting user id through fetchuser
+//     const track = await Tracks.find({ playlist_id: req.params.id, user: req.user.id });
+//     res.json(track);
+
+
+// })
+
 
 //Route2: Add new notes using: POST "/api/note/createnote".Login required
 router.post('/addtrack', fetchuser, [
@@ -38,7 +47,7 @@ router.post('/addtrack', fetchuser, [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const existingTrack = await Tracks.findOne({ track_id: track_id });
+    const existingTrack = await Tracks.findOne({ track_id: track_id, playlist_id:playlist_id });
     if (existingTrack) {
         console.log("Sorry, a track with same id already exists")
         return res.json({ success: success, message: 'Sorry, a track with same id already exists' });

@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import image_2 from '../../assets/ab67706f00000002776d882a0eb24571af5dc394.jpeg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SpotifyApiContext from '../../api/SpotifyApiContext';
 import CreatePlaylist from './CreatePlaylist';
 
 
 const Sidenav = () => {
 
-    const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+    let navigate = useNavigate();
+
     const context = useContext(SpotifyApiContext);
-    const { getUserPlaylist, userPlaylist } = context;
+    const { getAllUserPlaylist, userPlaylist, checklikedsong } = context;
 
     const [isToggle, setIsToggle] = useState(false)
 
     useEffect(() => {
-        getUserPlaylist();
+        getAllUserPlaylist();
         // eslint-disable-next-line
     }, [])
 
     const toggle = () => {
         setIsToggle(prevState => !prevState);
     };
-
 
     return (
         <nav className='left-section flex flex-col gap-y-2 max-w-[420px] min-w-[320px] w-[100%] '>{/*overflow-y-hidden max-h-screen*/}
@@ -42,7 +42,7 @@ const Sidenav = () => {
                 </div>
                 {isToggle && (
                     <div className='absolute h-fit w-fit p-4 bg-[#2f2f2f] left-full top-0 z-10 rounded-md createplaylist'>
-                        <CreatePlaylist/>
+                        <CreatePlaylist />
                     </div>
                 )}
             </div>
@@ -57,28 +57,19 @@ const Sidenav = () => {
                             <span>Recents <i className="fa-solid fa-list" /></span>
                         </div>
                         <ul className='flex flex-col gap-2  playlists'>
-                            {/* {arr.map((arr, index) => (
-                                <li className='flex gap-2 p-1' key={index}>
-                                    <div>
-                                        <img src={image_2} alt="" width="55px" className='rounded-md min-w-[55px]' />
+                            {userPlaylist.map((playlist, index) => (
+                                <Link to={`/playlistdetails/${playlist._id}`} key={index}><li className='flex gap-2 p-1'>
+                                    <div className='rounded-md min-w-[55px] flex items-center justify-center bg-slate-600'>
+                                        {/* <img src={image_2} alt="" width="55px" className='rounded-md min-w-[55px]' /> */}
+                                        <i className="fa-solid fa-music"/>
                                     </div>
                                     <div className='w-full'>
-                                        <span className='font-semibold text-base'>Liked </span>
-                                        <p className='text-sm'><span>Playlist</span> <span>{arr}</span></p>
+                                        <span className='font-semibold text-base'>{playlist.name}</span>
+                                        <p className='text-sm'><span>Playlist</span></p>
                                     </div>
-                                </li>
-                            ))} */}
-                            {userPlaylist.map((playlist, index) => (
-                            <li className='flex gap-2 p-1' key={index}>
-                                <div>
-                                    <img src={image_2} alt="" width="55px" className='rounded-md min-w-[55px]' />
-                                </div>
-                                <div className='w-full'>
-                                    <span className='font-semibold text-base'>{playlist.name}</span>
-                                    <p className='text-sm'><span>Playlist</span></p>
-                                </div>
-                            </li>
-                        ))}
+                                </li></Link>
+
+                            ))}
                         </ul>
                     </div>
                 </div>
