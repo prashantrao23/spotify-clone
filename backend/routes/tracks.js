@@ -42,12 +42,12 @@ router.post('/addtrack', fetchuser, [
     //destructuring: fetching these details from req.body
     const { track_id, playlist_id } = req.body;
     let success = false;
-    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    const existingTrack = await Tracks.findOne({ track_id: track_id, playlist_id:playlist_id });
+    const existingTrack = await Tracks.findOne({ track_id: track_id, playlist_id: playlist_id });
     if (existingTrack) {
         console.log("Sorry, a track with same id already exists")
         return res.json({ success: success, message: 'Sorry, a track with same id already exists' });
@@ -68,23 +68,25 @@ router.post('/addtrack', fetchuser, [
 
 
 //Route4: Delete notes using: Delete "/api/note/deletenote".Login required
-router.delete('/deletetrack/:id', fetchuser, async (req, res) => {
+router.delete('/deletetrack/:track_id/:playlist_id', fetchuser, async (req, res) => {
 
     let success = false;
+    const { track_id, playlist_id } = req.params;
+    // console.log(track_id, playlist_id);
 
     try {
-        //Find the note to be delete and delete it
+        //Find the track to be delete and delete it
         // using let instead of const, coz it was throwing error
-        let track = await Tracks.findById(req.params.id);
+        let track = await Tracks.findOne({ track_id: track_id, playlist_id: playlist_id });
         if (!track) { return res.status(404).send("Not Found") }
 
-        //Allow updation if user own this note
+        //Allow updation if user own this track
         if (track.user.toString() !== req.user.id) {
             return res.status(401).send("Not Allowed");
         }
 
 
-        track = await Playlist.findByIdAndDelete(req.params.id)
+        track = await Tracks.findOneAndDelete({track_id: track_id, playlist_id: playlist_id})
         success = true;
         res.json({ success: success, message: 'Your Track has been deleted', track: track });
     }
@@ -93,6 +95,24 @@ router.delete('/deletetrack/:id', fetchuser, async (req, res) => {
         res.status(500).send("Internal server error occured");
     }
 
+    // try {
+    //     // Find and delete the playlist track based on track_id and playlist_id
+    //     let playlistTrack = await Tracks.findOneAndDelete({
+    //         track_id: req.params.track_id,
+    //         playlist_id: req.params.playlist_id,
+    //         user: req.user.id // Ensure the user owns the playlist track
+    //     });
+
+    //     if (!playlistTrack) {
+    //         return res.status(404).send("Playlist track not found");
+    //     }
+
+    //     success = true;
+    //     res.json({ success: success, message: 'Track has been deleted from the playlist', playlistTrack: playlistTrack });
+    // } catch (error) {
+    //     console.error(error.message);
+    //     res.status(500).send("Internal server error occurred");
+    // }
 
 })
 

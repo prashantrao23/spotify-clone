@@ -24,7 +24,6 @@ const SpotifyApiState = (props) => {
 
   const accessToken = sessionStorage.getItem('token');
   const customauthToken = localStorage.getItem('token');
-  // console.log('Token from apistate',accessToken)
 
 
 
@@ -356,11 +355,50 @@ const SpotifyApiState = (props) => {
     setPlayTrackFooter(data)
   }
 
+  const addingTrackToLiked = async (track_id, playlist_id) => {
+    const options = {
+      method: 'POST',
+      url: `${host}/api/tracks/addtrack`,
+      headers: { "Content-Type": "application/json", "auth-token": customauthToken },
+      data: { track_id, playlist_id },
+    };
+    try {
+      const response = await axios.request(options);
+      console.log('Liked song data', response.data);
+      if (response.data.success) {
+        return true;
+      }
+    } catch (error) {
+      console.error('Error adding song to playlist ', error.response.data.error);
+      return false;
+    }
+  }
+
+  const removingTrackFromLiked = async (track_id, playlist_id) => {
+    const options = {
+      method: 'DELETE',
+      url: `${host}/api/tracks/deletetrack/${track_id}/${playlist_id}`,
+      headers: { "Content-Type": "application/json", "auth-token": customauthToken },
+    };
+    try {
+      const response = await axios.request(options);
+      console.log('Removed song data', response.data);
+      if (response.data.success) {
+        return true;
+      }
+
+    } catch (error) {
+      console.error('Error removing song from playlist ', error.response.data.error);
+      return false;
+    }
+  }
+
   return (
     <SpotifyApiContext.Provider value={{
       categorydata, getCategories, allplaylistdata, getAllPlaylists, singleplaylistdata, getPlaylists,
       accessToken, getNewAlbums, getAlbum, getSearchItem, searchKey, getuserdetail, getUser, getLikedPlaylist, likedPlaylist, checklikedsong,
-      likedSong, getAllUserPlaylist, userPlaylist, getUserPlaylistByID, userPlaylistByID, getTracks, playlistTracks, ImageColor, dominantColor, Playtrack, playTrackFooter
+      likedSong, getAllUserPlaylist, userPlaylist, getUserPlaylistByID, userPlaylistByID, getTracks, playlistTracks, ImageColor, dominantColor, Playtrack, playTrackFooter,
+      removingTrackFromLiked, addingTrackToLiked
     }}>
       {props.children}
     </SpotifyApiContext.Provider>

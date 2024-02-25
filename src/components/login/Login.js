@@ -13,8 +13,8 @@ const Login = (props) => {
     const [errors, setErrors] = useState({});
 
 
-    const client_id = 'e16d2adc1b4d4d1ea12fed9db89c4179';
-    const client_secret = '1cb042fa23cc4014b3b9ffa279e478f0';
+    const client_id = process.env.REACT_APP_CLIENT_ID;
+    const client_secret = process.env.REACT_APP_CLIENT_SECRET;
 
     const { getTokenkey } = props;
 

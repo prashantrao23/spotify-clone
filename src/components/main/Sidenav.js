@@ -1,16 +1,14 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react'
-import image_2 from '../../assets/ab67706f00000002776d882a0eb24571af5dc394.jpeg';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import SpotifyApiContext from '../../api/SpotifyApiContext';
 import CreatePlaylist from './CreatePlaylist';
 
 
 const Sidenav = () => {
 
-    let navigate = useNavigate();
 
     const context = useContext(SpotifyApiContext);
-    const { getAllUserPlaylist, userPlaylist, checklikedsong } = context;
+    const { getAllUserPlaylist, userPlaylist } = context;
 
     const [isToggle, setIsToggle] = useState(false)
 

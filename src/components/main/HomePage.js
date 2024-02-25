@@ -19,7 +19,6 @@ import CategoryCard from './cards/CategoryCard';
 import PlaylistCard from './cards/PlaylistCard';
 
 import { useNavigate } from 'react-router-dom';
-import Album from './cards/Album';
 
 import MoonLoader from "react-spinners/ClipLoader";
 
@@ -27,7 +26,7 @@ import MoonLoader from "react-spinners/ClipLoader";
 const HomePage = (props) => {
     const { showcarddata } = props;
     const context = useContext(SpotifyApiContext);
-    const { categorydata, getCategories, allplaylistdata, getAllPlaylists, getPlaylists, getNewAlbums, getAlbum, accessToken } = context;
+    const { categorydata, getCategories, allplaylistdata, getAllPlaylists, getPlaylists, getNewAlbums, accessToken } = context;
 
     let navigate = useNavigate();
 
@@ -100,7 +99,7 @@ const HomePage = (props) => {
     }, [getPlaylists, navigate]);
 
     if (loading) {
-        return <div className='flex justify-center items-center h-full w-full'>
+        return <div className='flex justify-center items-center h-screen w-full'>
             <MoonLoader color="#36d7b7" />
         </div>;
         // console.log("Loading...")

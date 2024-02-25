@@ -43,29 +43,6 @@ const Signup = (props) => {
     };
 
 
-    const getToken = async () => {
-        try {
-            const response = await fetch('https://accounts.spotify.com/api/token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Basic ' + btoa(`${client_id}:${client_secret}`),
-                },
-                body: new URLSearchParams({
-                    'grant_type': 'client_credentials',
-                }),
-            });
-
-            const data = await response.json();
-            console.log(data)
-            //   setAccessToken(data.access_token);
-            localStorage.setItem('token', data.access_token);
-
-        } catch (error) {
-            console.error('Error fetching Spotify API token:', error);
-        }
-    };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();

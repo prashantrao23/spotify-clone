@@ -2,19 +2,17 @@ import React, { useEffect, useContext, useState } from 'react'
 import SpotifyApiContext from '../../../api/SpotifyApiContext';
 import MoonLoader from "react-spinners/ClipLoader";
 import { Link, useParams } from 'react-router-dom';
-import axios from "axios";
 
 
 const CardData = (props) => {
 
     const context = useContext(SpotifyApiContext);
-    const { singleplaylistdata, getPlaylists, getuserdetail, getLikedPlaylist, likedPlaylist, checklikedsong, likedSong, getAllUserPlaylist, userPlaylist, ImageColor, dominantColor, Playtrack } = context;
+    const { singleplaylistdata, getPlaylists, getuserdetail, getLikedPlaylist, likedPlaylist, checklikedsong, likedSong, getAllUserPlaylist, userPlaylist, ImageColor, dominantColor, Playtrack, addingTrackToLiked, removingTrackFromLiked } = context;
 
     const [isToggle, setIsToggle] = useState(false)
     // const [songLiked, setSongLiked] = useState(false);
 
     const { id } = useParams();
-    // console.log('ID from url', id);
 
     if (!singleplaylistdata || !singleplaylistdata.name) {
         console.log("No card data")
@@ -41,18 +39,9 @@ const CardData = (props) => {
         // eslint-disable-next-line
     }, [likedPlaylist]);
 
-    const [bgColor, setBgColor] = useState(null);
-
-    // if (singleplaylistdata && singleplaylistdata.images) {
-    //     // const imageUrl = ImageColor(singleplaylistdata.images[0].url);
-    //     const imageUrl = singleplaylistdata.images[0].url;
-    //     console.log(imageUrl);
-
-    // }
 
     useEffect(() => {
         if (singleplaylistdata && singleplaylistdata.images) {
-
             // console.log("Image :", singleplaylistdata.images[0].url)
             const fetchDominantColor = async () => {
                 try {
@@ -62,27 +51,45 @@ const CardData = (props) => {
                 } catch (error) {
                     console.error('Error fetching dominant color:', error);
                 }
-
             };
-
             fetchDominantColor();
         }
+        // eslint-disable-next-line
     }, [singleplaylistdata]);
 
 
-    // console.log(dominantColor)
 
     const sendlikedplaylistid = async () => {
         await checklikedsong(likedPlaylist._id);
     };
 
-    // console.log(likedSong.map((trackid) => (
-    //     trackid.track_id
-    // )))
-
     const toggle = (index) => {
         setIsToggle(isToggle === index ? null : index);
     };
+
+    const handleSubmit = async (track_id, playlist_id) => {
+        const remove = await addingTrackToLiked(track_id, playlist_id);
+        if (remove) {
+            sendlikedplaylistid();
+            console.log("Added")
+        } else {
+            console.log("Not Added")
+        }
+    }
+
+    const handleRemoveFromLiked = async (track_id, playlist_id) => {
+        const remove = await removingTrackFromLiked(track_id, playlist_id);
+        if (remove) {
+            sendlikedplaylistid();
+            console.log("Removed")
+        } else {
+            console.log("Not Removed")
+        }
+    }
+
+    function sendTrack(data) {
+        Playtrack(data)
+    }
 
     const convertMsToMinutes = (durationInMs) => {
         // Convert milliseconds to seconds
@@ -111,50 +118,6 @@ const CardData = (props) => {
         }
     }
 
-    const host = 'http://127.0.0.1:5000'
-    const authToken = localStorage.getItem('token')
-    // const [trackDetail, setTrackDetail] = useState({trackID:'', playlistID:''})
-
-    const handleSubmit = async (track_id, playlist_id) => {
-        const options = {
-            method: 'POST',
-            url: `${host}/api/tracks/addtrack`,
-            headers: { "Content-Type": "application/json", "auth-token": authToken },
-            data: { track_id, playlist_id },
-        };
-        try {
-            const response = await axios.request(options);
-            console.log('Liked song data', response.data);
-            // if (response.data.success) {
-            //     setSongLiked(true)
-            // }
-        } catch (error) {
-            console.error('Error adding song to playlist ', error.response.data.error);
-        }
-    }
-
-    const handleRemoveFromLiked = async (track_id, playlist_id) => {
-        const options = {
-            method: 'POST',
-            url: `${host}/api/tracks/addtrack`,
-            headers: { "Content-Type": "application/json", "auth-token": authToken },
-            data: { track_id, playlist_id },
-        };
-        try {
-            const response = await axios.request(options);
-            console.log('Liked song data', response.data);
-        } catch (error) {
-            console.error('Error adding song to playlist ', error.response.data.error);
-        }
-    }
-
-    function sendTrack(data){
-
-        Playtrack(data)
-        // console.log(data)
-    } 
-
-    // console.log(singleplaylistdata.tracks.items)
 
     return (
 
@@ -218,20 +181,20 @@ const CardData = (props) => {
                                                 <tr className=" border-b  dark:border-gray-700 relative" key={index}>
                                                     <td className='py-1'>{index + 1}</td>
                                                     <th scope="row" className="px-6 py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                                        <button onClick={()=>{sendTrack({name:item.track.name, artist:item.track.album.artists , track:item.track.preview_url, icon:item.track.album.images})}}>
-                                                        <div className='flex gap-2 p-1 w-fit'>
-                                                            <div>
-                                                                {item.track.album.images.map((image, index) => (
-                                                                    <img key={index} src={image.url} alt="" width="55px" className="rounded-md min-w-[55px]" />
-                                                                )).slice(-1)[0]}
-                                                            </div>
-                                                            <div className='w-full min-w-[80px] max-w-[200px] overflow-hidden whitespace-nowrap text-ellipsis'>
-                                                                <span className='text-base'>{item.track.name}</span>
-                                                                <p className='text-sm'>{item.track.album.artists.map((artist) => (
-                                                                    <span key={artist.id}>{artist.name} | </span>
-                                                                ))}</p>
-                                                            </div>
-                                                        </div></button>
+                                                        <button onClick={() => { sendTrack({ name: item.track.name, artist: item.track.album.artists, track: item.track.preview_url, icon: item.track.album.images, track_id:item.track.id }) }}>
+                                                            <div className='flex gap-2 p-1 w-fit '>
+                                                                <div>
+                                                                    {item.track.album.images.map((image, index) => (
+                                                                        <img key={index} src={image.url} alt="" width="55px" className="rounded-md min-w-[55px]" />
+                                                                    )).slice(-1)[0]}
+                                                                </div>
+                                                                <div className='items-start flex flex-col w-full min-w-[80px] max-w-[200px] overflow-hidden whitespace-nowrap text-ellipsis'>
+                                                                    <span className='text-base'>{item.track.name}</span>
+                                                                    <p className='text-sm'>{item.track.album.artists.map((artist) => (
+                                                                        <span key={artist.id}>{artist.name} | </span>
+                                                                    ))}</p>
+                                                                </div>
+                                                            </div></button>
                                                     </th>
                                                     <td className="px-6 py-4">
                                                         <div className='whitespace-nowrap overflow-hidden text-ellipsis w-full min-w-[30] max-w-[100px]'>
@@ -241,16 +204,17 @@ const CardData = (props) => {
                                                     <td className="px-6 py-4">{formatDateToDaysAgo(item.added_at)}</td>
                                                     <td className="px-6 py-4">{convertMsToMinutes(item.track.duration_ms)}</td>
                                                     <td className="px-6 py-4">
-                                                        {likedSong.some(trackid => trackid.track_id === item.track.id) ? (
-                                                            <button className='' onClick={() => (handleRemoveFromLiked(item.track.id, likedPlaylist._id))}><i className="fa-solid fa-heart text-red-800" /></button>
-                                                        ) : (
-                                                            <button className='' onClick={() => (handleSubmit(item.track.id, likedPlaylist._id))}><i className="fa-regular fa-heart" /></button>
-                                                            // <>
-                                                            //     {songLiked ?
-                                                            //         <button className='' onClick={() => (handleRemoveFromLiked(item.track.id))}><i className="fa-solid fa-heart text-red-800" /></button>
-                                                            //         : <button className='' onClick={() => (handleSubmit(item.track.id, likedPlaylist._id))}><i className="fa-regular fa-heart" /></button>}
-                                                            // </>
-                                                        )}
+                                                        {
+                                                            likedSong.some(track => track.track_id === item.track.id) ? (
+                                                                <button className='dislike active' onClick={() => handleRemoveFromLiked(item.track.id, likedPlaylist._id)}>
+                                                                    <i className="fa-solid fa-heart text-red-800" />
+                                                                </button>
+                                                            ) : (
+                                                                <button className='like' onClick={() => handleSubmit(item.track.id, likedPlaylist._id)}>
+                                                                    <i className="fa-regular fa-heart" />
+                                                                </button>
+                                                            )
+                                                        }
                                                     </td>
                                                     <td className=' px-6 py-4'>
                                                         <button onClick={() => toggle(index)}><i className="fa-solid fa-bars" /></button>

@@ -5,7 +5,7 @@ const PlaylistCard = (props) => {
     const { image, item, getplaylistID } = props;
 
     return (
-        <div className='p-4 w-fit isolate rounded-md bg-[#181818] min-w-[170px] min-h-[255px] max-w-[211px] max-h-[295hx] hover:bg-[#282828] cursor-pointer'>
+        <div className='p-4 w-fit isolate rounded-md bg-[#181818] min-w-[170px] min-h-[255px] max-w-[211px] max-h-[295hx] hover:bg-[#282828]'>
             <div className=''>
                 <div className='shadow-lg shadow-black/50 relative'>
                     {image.map((image, index) => (
@@ -16,7 +16,7 @@ const PlaylistCard = (props) => {
                 </div>
                 <div>
                     <p className='font-bold truncate'>{item.name}</p>
-                    <p className='text-sm truncate'>{item.description}</p>
+                    {/* <p className='text-sm '>{item.description}</p> */}
                 </div>
             </div>
         </div>
