@@ -1,4 +1,4 @@
-import React, { useContext, useEffect,useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import SpotifyApiContext from '../../api/SpotifyApiContext';
 import MoonLoader from "react-spinners/ClipLoader";
@@ -16,21 +16,26 @@ const PlaylistDetails = () => {
         const fetchData = async () => {
             await getUserPlaylistByID(id);
             await checklikedsong(id);
-            setLoading(false); 
+            setLoading(false);
         };
         fetchData();
         // eslint-disable-next-line
     }, [id])
 
-    
-    useEffect(() => {
-        if (likedSong) {
-            // console.log("Liked Song before useEffect", likedSong);
-            const trackIds = likedSong.map(track => track.track_id);
-            getTracks(trackIds)
-        }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        const fetchData = async () => {
+
+            if (likedSong && likedSong.length > 0) {
+                console.log("Liked Song before useEffect", likedSong);
+                const trackIds = await likedSong.map(track => track.track_id);
+                console.log(trackIds);
+                await getTracks(trackIds)
+            }
+        }
+        fetchData()
+
+        // eslint-disable-next-line
     }, [likedSong]);
 
     // console.log("Liked Song after useEffect", likedSong);
